@@ -33,11 +33,12 @@
     "@material-ui/icons": "latest",
     "@material-ui/styles": "latest",
     "classnames": "latest",
+    "color-name": "latest",
     "react": "latest",
     "react-dom": "latest",
     "react-media": "latest",
-    "react-window": "latest",
-    "react-dimensions": "latest",
-    "react-router-dom": "latest"
+    "react-router-dom": "latest",
+    "react-virtualized": "latest",
+    "react-window": "latest"
   }
 }
