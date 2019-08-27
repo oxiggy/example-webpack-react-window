@@ -3,11 +3,26 @@ import { withStyles } from '@material-ui/core/styles'
 
 import { FixedSizeList as List } from 'react-window'
 import AutoSizer from 'react-virtualized/dist/es/AutoSizer'
-
 import * as colors from 'color-name'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import Avatar from '@material-ui/core/Avatar'
+import ListItemText from '@material-ui/core/ListItemText'
 
-const Row= ({ index, style, data:{ classes, list } }) => (
-    <div className={classes.item} style={style}>{list[index].name}</div>
+const Row= ({ index, style, data:{ classes, list, onClick } }) => (
+    <ListItem
+        className={classes.item}
+        style={style}
+        button
+        onClick={() => onClick(list[index], index)}
+    >
+        <ListItemAvatar>
+            <Avatar style={{ backgroundColor:`rgb(${list[index].color.join(',')})`}}>
+                {list[index].name[0]}
+            </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary={list[index].name} />
+    </ListItem>
 )
 
 class IndexPage extends React.PureComponent {
@@ -30,11 +45,14 @@ class IndexPage extends React.PureComponent {
                             width={width}
                             height={height}
                             itemCount={list.length}
-                            itemSize={40}
+                            itemSize={48}
                             itemData={{
                                 classes,
-                                list
+                                list,
+                                onClick: this.handleClick,
                             }}
+                            innerElementType="ul"
+                            overscanCount={10}
                         >
                             {Row}
                         </List>
@@ -42,6 +60,14 @@ class IndexPage extends React.PureComponent {
                 </AutoSizer>
             </div>
         )
+    }
+
+    handleClick= (item, index) => {
+        navigator.clipboard.writeText(item.color.toString())
+            .then(() => {
+                alert('copied: ' + item.color.toString())
+            })
+        ;
     }
 
 }
@@ -55,11 +81,15 @@ const styles= (theme) => ({
         height: '100%',
     },
     list: {
-
+        '& > ul': {
+            display: 'block',
+            listStyle: 'none',
+            margin: 0,
+            padding: 0,
+        }
     },
     item: {
-        paddingLeft: 24,
-        paddingRight: 24,
+
     },
 })
 
