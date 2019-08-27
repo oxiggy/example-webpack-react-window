@@ -5,7 +5,7 @@ import AppBar from '@material-ui/core/AppBar'
 
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
-import MenuIcon from '@material-ui/icons/Menu'
+import MenuIcon from '@material-ui/icons/Style'
 import Typography from '@material-ui/core/Typography'
 import InputBase from '@material-ui/core/InputBase'
 
@@ -30,16 +30,16 @@ class Header extends React.PureComponent {
     }
 
     render() {
-        const { classes, onOpenMenu, keyword, onChangeKeyword }= this.props
+        const { classes, keyword, onChangeKeyword }= this.props
         return (
-            <AppBar position="static" color="inherit" elevation={0} className={classes.root}>
+            <AppBar position="static" color="secondary" elevation={0} className={classes.root}>
                 <Box className={classes.fix}/>
                 <Toolbar>
                     <IconButton
                         color="primary"
                         edge="start"
                         aria-label="menu"
-                        onClick={onOpenMenu}
+                        onClick={() => location.reload()}
                     >
                         <MenuIcon />
                     </IconButton>
@@ -73,9 +73,9 @@ const styles= (theme) => ({
     search: {
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.background.default, 0.75),
+        backgroundColor: fade(theme.palette.background.default, 0.18),
         '&:hover': {
-            backgroundColor: fade(theme.palette.background.default, 1),
+            backgroundColor: fade(theme.palette.background.default, 0.24),
         },
         marginLeft: 0,
         width: '100%',

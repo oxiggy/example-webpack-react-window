@@ -10,6 +10,9 @@ import Avatar from '@material-ui/core/Avatar'
 import ListItemText from '@material-ui/core/ListItemText'
 import { Box } from '@material-ui/core'
 import Header from '../components/Header'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import IconButton from '@material-ui/core/IconButton'
+import FormatPaintIcon from '@material-ui/icons/FormatPaint'
 
 const list= Object
     .keys(colors)
@@ -19,20 +22,26 @@ const list= Object
     }))
 ;
 
-const Row= ({ index, style, data:{ classes, list, onClick } }) => (
-    <ListItem
-        className={classes.item}
-        style={style}
-        button
-        onClick={() => onClick(list[index], index)}
-    >
-        <ListItemAvatar>
-            <Avatar style={{ backgroundColor:`rgb(${list[index].color.join(',')})`}}>
-                {list[index].name[0]}
-            </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary={list[index].name} />
-    </ListItem>
+const Item= ({ index, style, data:{ classes, list, onClick, onClickSecondary } }) => (
+    <div style={style}>
+        <ListItem
+            className={classes.item}
+            button
+            onClick={() => onClick(list[index], index)}
+        >
+            <ListItemAvatar>
+                <Avatar style={{ backgroundColor:`rgb(${list[index].color.join(',')})`}}>
+                    {list[index].name[0]}
+                </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={list[index].name} />
+            <ListItemSecondaryAction>
+                <IconButton edge="end" aria-label="comments" onClick={() => onClickSecondary(list[index], index)}>
+                    <FormatPaintIcon />
+                </IconButton>
+            </ListItemSecondaryAction>
+        </ListItem>
+    </div>
 )
 
 class IndexPage extends React.PureComponent {
@@ -40,6 +49,7 @@ class IndexPage extends React.PureComponent {
     state= {
         keyword: '',
         filteredList: [],
+        background: null,
     }
 
     componentDidMount() {
@@ -66,7 +76,7 @@ class IndexPage extends React.PureComponent {
                     <Header keyword={this.state.keyword} onChangeKeyword={this.handleChangeKeyword}/>
                 </Box>
 
-                <Box className={classes.root}>
+                <Box className={classes.root} style={{ backgroundColor:(this.state.background || undefined) }}>
                     <AutoSizer>
                         {({width, height}) => (
                             <List
@@ -79,11 +89,12 @@ class IndexPage extends React.PureComponent {
                                     classes,
                                     list: this.state.filteredList,
                                     onClick: this.handleClick,
+                                    onClickSecondary: this.handleClickSecondary
                                 }}
                                 innerElementType="ul"
                                 overscanCount={10}
                             >
-                                {Row}
+                                {Item}
                             </List>
                         )}
                     </AutoSizer>
@@ -104,7 +115,9 @@ class IndexPage extends React.PureComponent {
             })
         ;
     }
-
+    handleClickSecondary= (item, index) => {
+        this.setState({ background:`rgb(${item.color.join(',')})`})
+    }
 }
 
 const styles= (theme) => ({
@@ -120,7 +133,7 @@ const styles= (theme) => ({
         }
     },
     item: {
-
+        position: 'relative',
     },
 })
 
