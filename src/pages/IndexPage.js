@@ -75,7 +75,7 @@ class IndexPage extends React.PureComponent {
     }
 
     filterList() {
-        const filteredList= list.filter((item) => item.name.indexOf(this.state.keyword) > -1)
+        const filteredList= list.filter((item) => item.name.indexOf(this.state.keyword.toLowerCase()) > -1)
         this.setState({ filteredList })
     }
 

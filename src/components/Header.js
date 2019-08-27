@@ -110,6 +110,7 @@ const styles= (theme) => ({
     },
     link: {
         paddingLeft: theme.spacing(2),
+        whiteSpace: 'nowrap',
     }
 })
 
