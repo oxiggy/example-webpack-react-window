@@ -13,6 +13,7 @@ import SearchIcon from '@material-ui/icons/Search'
 
 
 import Box from '@material-ui/core/Box'
+import Link from '@material-ui/core/Link'
 
 
 class Header extends React.PureComponent {
@@ -33,16 +34,16 @@ class Header extends React.PureComponent {
         const { classes, keyword, onChangeKeyword }= this.props
         return (
             <AppBar position="static" color="secondary" elevation={0} className={classes.root}>
-                <Box className={classes.fix}/>
                 <Toolbar>
                     <IconButton
-                        color="primary"
+                        color="inherit"
                         edge="start"
                         aria-label="menu"
                         onClick={() => location.reload()}
                     >
                         <MenuIcon />
                     </IconButton>
+                    <Link className={classes.link} variant="h6" href="https://github.com/colorjs/color-name" color="inherit">npm: color-name</Link>
                     <div style={{ flexGrow:1 }}/>
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
@@ -107,6 +108,9 @@ const styles= (theme) => ({
             },
         },
     },
+    link: {
+        paddingLeft: theme.spacing(2),
+    }
 })
 
 export default withStyles(styles)(

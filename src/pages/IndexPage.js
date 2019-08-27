@@ -1,5 +1,7 @@
 import React from 'react'
-import { withStyles } from '@material-ui/core/styles'
+import { withStyles, getContrastText } from '@material-ui/core/styles'
+
+console.log(getContrastText)
 
 import { FixedSizeList as List } from 'react-window'
 import AutoSizer from 'react-virtualized/dist/es/AutoSizer'
@@ -13,6 +15,8 @@ import Header from '../components/Header'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import IconButton from '@material-ui/core/IconButton'
 import FormatPaintIcon from '@material-ui/icons/FormatPaint'
+import ContrastText from '../components/ContrastText'
+import ContrastIcon from '../components/ContrastIcon'
 
 const list= Object
     .keys(colors)
@@ -22,7 +26,7 @@ const list= Object
     }))
 ;
 
-const Item= ({ index, style, data:{ classes, list, onClick, onClickSecondary } }) => (
+const Item= ({ index, style, data:{ classes, list, onClick, onClickSecondary, background } }) => (
     <div style={style}>
         <ListItem
             className={classes.item}
@@ -30,14 +34,22 @@ const Item= ({ index, style, data:{ classes, list, onClick, onClickSecondary } }
             onClick={() => onClick(list[index], index)}
         >
             <ListItemAvatar>
-                <Avatar style={{ backgroundColor:`rgb(${list[index].color.join(',')})`}}>
-                    {list[index].name[0]}
+                <Avatar className={classes.itemAvatar} style={{ backgroundColor:`rgb(${list[index].color.join(',')})`}}>
+                    <ContrastText background={`rgb(${list[index].color.join(',')})`}>
+                        {list[index].name[0]}
+                    </ContrastText>
                 </Avatar>
             </ListItemAvatar>
-            <ListItemText primary={list[index].name} />
+            <ListItemText
+                primary={(
+                    <ContrastText background={background}>
+                        {list[index].name}
+                    </ContrastText>
+                )}
+            />
             <ListItemSecondaryAction>
                 <IconButton edge="end" aria-label="comments" onClick={() => onClickSecondary(list[index], index)}>
-                    <FormatPaintIcon />
+                    <ContrastIcon background={background} iconComponent={FormatPaintIcon} />
                 </IconButton>
             </ListItemSecondaryAction>
         </ListItem>
@@ -89,7 +101,8 @@ class IndexPage extends React.PureComponent {
                                     classes,
                                     list: this.state.filteredList,
                                     onClick: this.handleClick,
-                                    onClickSecondary: this.handleClickSecondary
+                                    onClickSecondary: this.handleClickSecondary,
+                                    background: this.state.background,
                                 }}
                                 innerElementType="ul"
                                 overscanCount={10}
